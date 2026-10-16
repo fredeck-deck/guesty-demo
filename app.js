@@ -1,6 +1,15 @@
-// Harborly PMS (demo). Fictional data, fake auth: any email/password signs in.
+// Guesty (demo reskin). Synthetic data, fake auth: any email/password signs in.
 (function () {
   const P = window.PMS;
+  // Synthetic-data ribbon on every page
+  try {
+    if (!document.querySelector(".synthetic")) {
+      const b = document.createElement("div");
+      b.className = "synthetic";
+      b.innerHTML = '<span class="dot"></span>Synthetic demo environment — fictional data, not a live Guesty account';
+      document.body.insertBefore(b, document.body.firstChild);
+    }
+  } catch (_) {}
   const qs = new URLSearchParams(location.search);
   const page = document.body.dataset.page;
   const store = {
@@ -16,13 +25,13 @@
 
   function shell(title) {
     document.getElementById("app").insertAdjacentHTML("afterbegin", `
-      <aside class="side"><div class="brand"><img src="logo.svg" alt="Harborly" class="logo">Harborly<span>PMS</span></div>
+      <aside class="side"><div class="brand"><img src="logo.svg" alt="Guesty" class="logo">guesty</div>
         <nav>
           <a href="dashboard.html" class="${page === "dashboard" ? "on" : ""}">Dashboard</a>
           <a href="listings.html" class="${["listings", "listing", "reservations", "calendar"].includes(page) ? "on" : ""}">Listings</a>
           <a href="owners.html" class="${page === "owners" ? "on" : ""}">Owners</a>
           <a href="account.html" class="${page === "account" ? "on" : ""}">Account</a>
-        </nav></aside>`);
+        </nav><div class="foot">Guesty · demo workspace<br>Synthetic data</div></aside>`);
     document.getElementById("top").innerHTML = `<h1>${esc(title)}</h1><div class="who"><span id="account-name">${esc(P.account.company_name)}</span> · <a href="#" id="logout">Log out</a></div>`;
     document.getElementById("logout").onclick = (e) => { e.preventDefault(); store.del("hp_session"); location.href = "index.html"; };
   }
@@ -40,12 +49,12 @@
     const step = qs.get("step") || "email";
     const next = qs.get("next") || "dashboard.html";
     if (step === "email") {
-      main.innerHTML = `<div class="auth card"><div class="brand big"><img src="logo.svg" alt="Harborly" class="logo">Harborly<span>PMS</span></div><h1>Log in</h1>
+      main.innerHTML = `<div class="auth card"><div class="brand big"><img src="logo.svg" alt="Guesty" class="logo">guesty</div><h1>Log in</h1>
         <form id="f"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="username" required>
-        <button id="continue" type="submit">Continue</button></form><p class="note">Demo portal with fictional data. Any email and password work.</p></div>`;
+        <button id="continue" type="submit">Continue</button></form><p class="note">Synthetic demo environment. Any email and password sign you in.</p></div>`;
       document.getElementById("f").onsubmit = (e) => { e.preventDefault(); store.set("hp_email", document.getElementById("email").value); location.href = "index.html?step=password&next=" + encodeURIComponent(next); };
     } else {
-      main.innerHTML = `<div class="auth card"><div class="brand big"><img src="logo.svg" alt="Harborly" class="logo">Harborly<span>PMS</span></div><h1>Enter your password</h1>
+      main.innerHTML = `<div class="auth card"><div class="brand big"><img src="logo.svg" alt="Guesty" class="logo">guesty</div><h1>Enter your password</h1>
         <p class="muted">${esc(store.get("hp_email") || "")}</p>
         <form id="f"><label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" required>
         <button id="login" type="submit">Log in</button></form><p><a href="index.html">Use another account</a></p></div>`;
