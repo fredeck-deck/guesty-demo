@@ -18,3 +18,4 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:8px 10px
 .filters{display:flex;gap:12px;align-items:end}.filters label{margin:0}.filters input{width:auto}
 button{background:var(--brand);color:#fff;border:0;border-radius:8px;padding:10px 18px;font-size:15px;cursor:pointer;margin-top:14px}.note{font-size:12px;color:var(--muted);margin-top:18px}
 @media(max-width:800px){#app{flex-direction:column}.side{width:auto}.grid,.grid2{grid-template-columns:1fr}}
+.logo{width:28px;height:28px;vertical-align:middle;margin-right:8px;border-radius:6px}

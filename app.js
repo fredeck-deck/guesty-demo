@@ -16,7 +16,7 @@
 
   function shell(title) {
     document.getElementById("app").insertAdjacentHTML("afterbegin", `
-      <aside class="side"><div class="brand">Harborly<span>PMS</span></div>
+      <aside class="side"><div class="brand"><img src="logo.svg" alt="Harborly" class="logo">Harborly<span>PMS</span></div>
         <nav>
           <a href="dashboard.html" class="${page === "dashboard" ? "on" : ""}">Dashboard</a>
           <a href="listings.html" class="${["listings", "listing", "reservations", "calendar"].includes(page) ? "on" : ""}">Listings</a>
@@ -40,12 +40,12 @@
     const step = qs.get("step") || "email";
     const next = qs.get("next") || "dashboard.html";
     if (step === "email") {
-      main.innerHTML = `<div class="auth card"><div class="brand big">Harborly<span>PMS</span></div><h1>Log in</h1>
+      main.innerHTML = `<div class="auth card"><div class="brand big"><img src="logo.svg" alt="Harborly" class="logo">Harborly<span>PMS</span></div><h1>Log in</h1>
         <form id="f"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="username" required>
         <button id="continue" type="submit">Continue</button></form><p class="note">Demo portal with fictional data. Any email and password work.</p></div>`;
       document.getElementById("f").onsubmit = (e) => { e.preventDefault(); store.set("hp_email", document.getElementById("email").value); location.href = "index.html?step=password&next=" + encodeURIComponent(next); };
     } else {
-      main.innerHTML = `<div class="auth card"><div class="brand big">Harborly<span>PMS</span></div><h1>Enter your password</h1>
+      main.innerHTML = `<div class="auth card"><div class="brand big"><img src="logo.svg" alt="Harborly" class="logo">Harborly<span>PMS</span></div><h1>Enter your password</h1>
         <p class="muted">${esc(store.get("hp_email") || "")}</p>
         <form id="f"><label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" required>
         <button id="login" type="submit">Log in</button></form><p><a href="index.html">Use another account</a></p></div>`;
