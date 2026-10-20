@@ -129,7 +129,7 @@
     } else if (step === "sms") {
       const last4 = (P.account.phone || "").replace(/\D/g, "").slice(-4);
       main.innerHTML = frame(`<div class="sms-icon">${svg(I.sms, 'width="26" height="26"')}</div><h1 style="font-size:24px;margin:0">SMS authentication</h1><p class="phone">+1 XXX-XXX-${last4}</p>
-        <form id="f"><label>Enter the code you received</label><div class="codes">${[0, 1, 2, 3, 4, 5].map((i) => `<input type="text" inputmode="numeric" maxlength="1" id="code-${i}" aria-label="Digit ${i + 1}">`).join("")}</div>
+        <form id="f"><label>Enter the code you received</label><div class="codes">${[0, 1, 2, 3, 4, 5].map((i) => `<input type="text" inputmode="numeric" autocomplete="one-time-code" id="code-${i}" aria-label="Digit ${i + 1}">`).join("")}</div>
         <div class="resend">Didn't receive the code? <a href="#" id="resend" class="wait">Resend in 30s</a></div>
         <label class="check"><input type="checkbox">Do not challenge me on this device again</label>
         <p class="err" id="err" hidden></p><button id="verify" class="btn" type="submit">Verify code</button></form>
@@ -137,7 +137,12 @@
       const boxes = [...document.querySelectorAll(".codes input")];
       boxes[0].focus();
       boxes.forEach((b, i) => {
-        b.oninput = () => { b.value = b.value.replace(/\D/g, "").slice(-1); if (b.value && boxes[i + 1]) boxes[i + 1].focus(); };
+        // A whole code typed or filled into one box spreads across the boxes from there.
+        b.oninput = () => {
+          const d = b.value.replace(/\D/g, "");
+          if (d.length > 1) { d.slice(0, 6 - i).split("").forEach((c, j) => (boxes[i + j].value = c)); (boxes[Math.min(5, i + d.length)]).focus(); return; }
+          b.value = d; if (d && boxes[i + 1]) boxes[i + 1].focus();
+        };
         b.onkeydown = (e) => { if (e.key === "Backspace" && !b.value && boxes[i - 1]) boxes[i - 1].focus(); };
         b.onpaste = (e) => { e.preventDefault(); const d = (e.clipboardData.getData("text") || "").replace(/\D/g, "").slice(0, 6); d.split("").forEach((c, j) => boxes[j] && (boxes[j].value = c)); (boxes[d.length] || boxes[5]).focus(); };
       });
